@@ -1,5 +1,8 @@
 
 import { version } from ".";
+//importation des classe du modele d'index
+import { Data, TimeSeries, Datum , Sensor, Temerature, Humidity ,Light , Door, FanSpeed  } from '../../src/index';
+
 import  { data }  from '../resources/sensors_data';
 
 describe('Sensor model tests', () => {
@@ -13,4 +16,5 @@ describe('Sensor model tests', () => {
   });
   /* TODO: Écrire ici la suite de tests pour le modèle objet.*/
   //
+  
 });
