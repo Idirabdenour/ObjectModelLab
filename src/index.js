@@ -1,78 +1,112 @@
 
 export const version = () => "1.0.0";
 
-/* TODO : Créer le modèle objet ici */ 
+/*Sensor*/ 
+
+export const typeSensor = { 'Temperature':'Temperature',
+                            'Door':'Door'
+                            };
  export class Sensor {
 
-  constructor(id, name, type, data) {
-    this._id = id;
-    this._name = name;
-    this._type = type;
-    this._data = data;
+  constructor(object) {
+    this._id = object.id;
+    this._name = object.name;
   }
   get id() {
     return this._id;
   }
   get name() {
     return this._name;
+  }  
+ }
+
+export class Temperature extends Sensor{
+  constructor(object){
+    super(object);
+    this._type ='Temperature';
+    this._SensorData = new TimeSeries(object.SensorData);
   }
-  get data() {
-    return this._data;
-  }
-  get type() {
+  get type(){
     return this._type;
   }
- }
- 
+  get dataSensor(){
+    return this._SensorData;
+  }
+  DTemperature(){
+    return this._SensorData.MesureDate();
+  }
+  temperature(){
+    return 'La derniere mesure ' + this._SensorData.MesureDate() + '°C at ' + this._SensorData.MesureDate();
+  }
+  toString() {
+    return ( 'id: ' + this._id + ' type: ' + this._type + ' name: ' + this._name);
+  }
+}
+
  
 export class DOOR extends Sensor{
-    constructor(id,nom,type,data){
-        super(id,nom,type,data);
-     
-}
+    constructor(object){
+        super(object);
+      this._type='Door';
+      this._dataSensor= new Datum(object.dataSensor);
+    }
+    get type(){
+        return this._type;
+    }
+    get dataSensor(){
+        return this._dataSensor;
+    }
+    doorDtate(){
+      return this.dataSensor.value;
+    }
 }
 
 
 
 export class Data{
-    constructor(values,labels){
-        this._values=values;
-        this._labels=labels;
+    constructor(data){
+        this._data=data;
     }
-    get values(){
-        return this._values;
+    get data(){
+        return this._data;
     }
-   
-    get labels(){
-        return this._labels;
-    }
-    nbrValues(){
-        return this._values.length;
-    }
-
 }
 
-class TimeSeries extends Data {
-	constructor(id,name,values,labels){
-		super(id, name);
-    	this._values = values || [];
-    	this._labels = labels || [];
+export class TimeSeries extends Data {
+	constructor(data){
+		super(data);
+    this._values= data.values;
+    this._labels= data.labels;
+
 	}
+
 	get values(){
-		return this._values || [];
+		return this._values;
 	}
-	get labels(){
-		return this._labels || [];
+	
+  get labels(){
+		return this._labels;
 	}
+  
+  numberOfValues(){
+    return this.values.length;
+  }
+  MesureDate(){
+    return this._labels[this.labels.length-1];
+  }
+  lastMesure(){
+    return this._values[this._values.length-1];
+  }
+
 		
 }
-class Datum extends Data {
-	constructor(id,name,value){
-		super(id, name);
-    	this._value = value;
+export class Datum extends Data {
+	constructor(data){
+		super(data);
+    this._value= data.value;
     }
 	get value(){
-		return this._value || 0;
+		return this._value;
 	}
 	
 }
